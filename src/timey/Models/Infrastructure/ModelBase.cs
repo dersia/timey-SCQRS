@@ -17,13 +17,6 @@ namespace timey.Models.Infrastructure
         [JsonProperty("partitionKey")]
         public string PartitionKey { get => GetType().Name; }
 
-        public static T FromDocument<T>(Microsoft.Azure.Documents.Document document) where T : ModelBase
-        {
-            var result = JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(document));
-            result.id = Guid.Parse(document.Id);
-            return result;
-        }
-
         public void RegisterHydration<T>(Action<T> hydrater, Func<EventBase, bool> applyIf) where T : EventBase
         {
             if (!_hydraters.TryGetValue(typeof(T), out var hydraters))

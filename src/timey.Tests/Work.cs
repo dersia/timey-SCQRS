@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using timey.Commands;
@@ -7,10 +7,10 @@ using timey.Handlers;
 
 namespace timey.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class Work
     {
-        [Test]
+        [TestMethod]
         public void StartWork()
         {
             var startWorkCommand = new StartWork
@@ -19,10 +19,10 @@ namespace timey.Tests
                 WorkId = Guid.NewGuid()
             };
 
-            Assert.IsInstanceOf<WorkStarted>(new WorkHandler().Handle(startWorkCommand, Guid.NewGuid()).First());
+            Assert.IsInstanceOfType(new WorkHandler().Handle(startWorkCommand, Guid.NewGuid().ToString()).First(), typeof(WorkStarted));
         }
 
-        [Test]
+        [TestMethod]
         public void StartWorkCheckValues()
         {
             var now = DateTime.UtcNow;
@@ -35,10 +35,10 @@ namespace timey.Tests
             };
 
             var workStarted = new WorkHandler().Handle(startWorkCommand, userId.ToString()).First() as WorkStarted;
-            Assert.NotNull(workStarted);
+            Assert.IsNotNull(workStarted);
             Assert.AreEqual(startWorkCommand.WorkId, workStarted.Id);
             Assert.AreEqual(startWorkCommand.TimeyTaskId, workStarted.TimeyTaskId);
-            Assert.AreEqual(userId, workStarted.UserId);
+            Assert.AreEqual(userId.ToString(), workStarted.UserId);
             Assert.IsTrue(now < workStarted.StartTime);
         }
     }

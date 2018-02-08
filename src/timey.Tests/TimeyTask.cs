@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using timey.Commands;
@@ -7,10 +7,10 @@ using timey.Handlers;
 
 namespace timey.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class TimeyTask
     {
-        [Test]
+        [TestMethod]
         public void AddTimeyTask()
         {
             var addTimeyTaskCommand = new AddTimeyTask
@@ -26,10 +26,10 @@ namespace timey.Tests
                 Name = "TestName"
             };
 
-            Assert.IsInstanceOf<TimeyTaskAdded>(new TimeyTaskHandler().Handle(addTimeyTaskCommand).First());            
+            Assert.IsInstanceOfType(new TimeyTaskHandler().Handle(addTimeyTaskCommand).First(), typeof(TimeyTaskAdded));
         }
 
-        [Test]
+        [TestMethod]
         public void AddTimeyTaskCheckValues()
         {
             var addTimeyTaskCommand = new AddTimeyTask
@@ -46,7 +46,7 @@ namespace timey.Tests
             };
 
             var timeyTaskAdded = new TimeyTaskHandler().Handle(addTimeyTaskCommand).First() as TimeyTaskAdded;
-            Assert.NotNull(timeyTaskAdded);
+            Assert.IsNotNull(timeyTaskAdded);
             Assert.AreEqual(addTimeyTaskCommand.TimeyTaskId, timeyTaskAdded.Id);
             Assert.AreEqual(addTimeyTaskCommand.BudgetId, timeyTaskAdded.BudgetId);
             Assert.AreEqual(addTimeyTaskCommand.BudgetName, timeyTaskAdded.BudgetName);

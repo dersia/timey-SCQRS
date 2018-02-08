@@ -17,7 +17,9 @@ namespace timey.Handlers
             if (string.IsNullOrEmpty(command.Name))
                 throw new ArgumentNullException(nameof(command.Name));
 
-            return new List<EventBase> { RiseEvent(command) };
+            var events = new Queue<EventBase>();
+            events.Enqueue(RiseEvent(command));
+            return events;
         }
 
         public IEnumerable<EventBase> Handle(ChangeTimeyTask command)
@@ -29,7 +31,9 @@ namespace timey.Handlers
             if (string.IsNullOrEmpty(command.Name))
                 throw new ArgumentNullException(nameof(command.Name));
 
-            return new List<EventBase> { RiseEvent(command) };
+            var events = new Queue<EventBase>();
+            events.Enqueue(RiseEvent(command));
+            return events;
         }
 
         private TimeyTaskAdded RiseEvent(AddTimeyTask command)

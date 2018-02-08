@@ -19,7 +19,9 @@ namespace timey.Handlers
             if (string.IsNullOrWhiteSpace(userId))
                 throw new ArgumentNullException(nameof(userId));
 
-            return new List<EventBase> { RaiseEvent(command, userId) };
+            var events = new Queue<EventBase>();
+            events.Enqueue(RaiseEvent(command, userId));
+            return events;
         }
 
         public IEnumerable<EventBase> Handle(EndWork command, string userId)
@@ -33,7 +35,9 @@ namespace timey.Handlers
             if (string.IsNullOrWhiteSpace(userId))
                 throw new ArgumentNullException(nameof(userId));
 
-            return new List<EventBase> { RaiseEvent(command, userId) };
+            var events = new Queue<EventBase>();
+            events.Enqueue(RaiseEvent(command, userId));
+            return events;
         }
 
         private WorkStarted RaiseEvent(StartWork command, string userId)
